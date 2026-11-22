@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/inventory-management.iml" filepath="$PROJECT_DIR$/.idea/inventory-management.iml" />
+      <module fileurl="file://$PROJECT_DIR$/inventory-management/inventory-management.iml" filepath="$PROJECT_DIR$/inventory-management/inventory-management.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/inventory-management-system-gatita.iml" filepath="$PROJECT_DIR$/.idea/inventory-management-system-gatita.iml" />
     </modules>
   </component>
 </project>
