@@ -2,6 +2,7 @@ package com.inventory.controller;
 
 import com.inventory.dto.ProductRequest;
 import com.inventory.dto.ProductResponse;
+import com.inventory.dto.ProductUpdateRequest;
 import com.inventory.entity.Product;
 import com.inventory.service.ProductService;
 
@@ -70,5 +71,25 @@ public class ProductController {
                 product.getUpdatedAt()
         );
     }
+
+    // Actualizar producto
+    @PutMapping("/{id}")
+    public ProductResponse updateProduct(
+            @PathVariable Long id,
+            @Valid @RequestBody ProductUpdateRequest request) {
+
+        Product updatedProduct =
+                productService.updateProduct(id, request);
+
+        return convertToResponse(updatedProduct);
+    }
+
+    // Actualizar producto
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@PathVariable Long id) {
+        productService.deleteById(id);
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.inventory.service;
 
+import com.inventory.dto.ProductUpdateRequest;
 import com.inventory.entity.Product;
 import com.inventory.repository.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -17,7 +18,7 @@ public class ProductService {
 
     @Transactional
     public Product createProduct(Product product) {
-        if (productRepository.findByName((product.getName()))) {
+        if (productRepository.existsByName((product.getName()))) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
                     "Ya existe un producto con ese nombre"
@@ -43,6 +44,48 @@ public class ProductService {
                 );
     }
 
+    @Transactional
+    public Product updateProduct(Long id, ProductUpdateRequest request) {
+
+        // 1. Buscar el producto existente
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "No se encontró el producto con ID: " + id
+                ));
+
+        // 2. Comprobar si otro producto utiliza el mismo name
+        boolean nameExists = productRepository
+                .existsByNameAndIdNot(request.name(), id);
+
+        if (nameExists) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "El nombre ya está registrado en otro producto"
+            );
+        }
+
+        // 3. Actualizar los atributos
+        product.setName(request.name());
+        product.setDescription(request.description());
+        product.setPrice(request.price());
+        product.setStock(request.stock());
+        product.setMinStock(request.minStock());
+
+        // 4. Guardar los cambios
+        return productRepository.save(product);
+    }
+
+    @Transactional
+    public void deleteById(Long Id) {
+        Product product = productRepository.findById(Id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Producto no encontrado con ID: " + Id
+                ));
+
+        productRepository.delete(product);
+    }
 
 
 }
