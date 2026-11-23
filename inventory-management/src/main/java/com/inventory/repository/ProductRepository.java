@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    boolean findByName(String name);
+    boolean existsByName(String name);
+    boolean existsByNameAndIdNot(String name, Long Id);
 }
